@@ -120,8 +120,14 @@ class TzTime
 
   # Returns the underlying TZInfo::TimeZonePeriod instance for the wrapped
   # time.
-  def period
-    @period ||= zone.tzinfo.period_for_local(time)
+  def period(dst=true)
+    t = time
+    begin
+      @period ||= zone.tzinfo.period_for_local(t, dst)
+    rescue TZInfo::PeriodNotFound
+      t -= 1.hour
+      retry
+    end
   end
 
   # Returns true if the current time is adjusted for daylight savings.
