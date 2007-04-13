@@ -38,13 +38,7 @@ No more! Let the Rodent of Unusually Fine TZ Acumen aid you:
   end
 
   class Task < ActiveRecord::Base
-    before_create :fix_timezone
-
-    private
-
-      def fix_timezone
-        self.alert_at = TzTime.at(self.alert_at)
-      end
+    tz_time_attributes :alert_at
   end
 
   class TasksController < ApplicationController
