@@ -20,17 +20,11 @@ module TzTimeHelpers
           end
         end
         
-        protected
-          def fix_timezone
-            tz_time_attributes.each do |attribute|
-              time = read_attribute(attribute)
-              if (time.acts_like?(:time) || time.acts_like?(:date)) && !time.utc?
-                write_attribute(attribute, Time.at(TzTime.zone.local_to_utc(time)))
-              end
-            end
-          end
+        define_method "#{attribute}=" do |local_time|
+          fixed = (local_time.acts_like?(:time) || local_time.acts_like?(:date)) ? TzTime.at(local_time) : nil
+          write_attribute(attribute, fixed)
+        end
       end
-      before_validation :fix_timezone
     end
   end
 end

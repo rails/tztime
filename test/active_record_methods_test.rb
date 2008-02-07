@@ -53,5 +53,11 @@ module TzTimeHelpers
       @record.send :fix_timezone
       assert_equal Time.utc(2006, 1, 1), @record[:due_on]
     end
+    
+    def test_should_only_fix_timezones_that_have_been_written
+      @record.instance_variable_set(:@due_on, Time.utc(2006, 1, 1))
+      @record.send :fix_timezone
+      assert_equal TzTime.utc(2006, 1, 1), @record.due_on
+    end
   end
 end
