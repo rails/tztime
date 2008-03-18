@@ -18,11 +18,11 @@ module TzTimeHelpers
               time
             end
           end
-        end
-        
-        define_method "#{attribute}=" do |local_time|
-          fixed = (local_time.acts_like?(:time) || local_time.acts_like?(:date)) ? TzTime.at(local_time) : nil
-          write_attribute(attribute, fixed)
+
+          define_method "#{attribute}=" do |local_time|
+            fixed = (local_time.acts_like?(:time) || local_time.acts_like?(:date)) ? TzTime.at(local_time) : nil 
+            write_attribute attribute, fixed
+          end
         end
       end
     end
